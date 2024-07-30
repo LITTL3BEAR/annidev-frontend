@@ -1,44 +1,39 @@
-@import 'variables';
-@import 'mixins';
-@import 'themes';
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
+@use 'styles/themes' as themes;
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$annidev-frontend-primary: mat.define-palette(mat.$indigo-palette);
-$annidev-frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// Apply the light theme by default
+@include mat.all-component-themes(themes.$minimal-light-theme);
+@include themes.custom-styles(themes.$minimal-light-theme);
 
-// The warn palette is optional (defaults to red).
-$annidev-frontend-warn: mat.define-palette(mat.$red-palette);
+// Apply custom properties
+:root {
+  @include themes.apply-custom-properties(themes.$minimal-light-theme);
+}
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$annidev-frontend-theme: mat.define-light-theme((
-  color: (
-    primary: $annidev-frontend-primary,
-    accent: $annidev-frontend-accent,
-    warn: $annidev-frontend-warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0
-));
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($annidev-frontend-theme);
+// Dark theme class
+.dark-theme {
+  @include mat.all-component-colors(themes.$minimal-dark-theme);
+  @include themes.custom-styles(themes.$minimal-dark-theme);
+  @include themes.apply-custom-properties(themes.$minimal-dark-theme);
+}
 
-/* You can add global styles to this file, and also import other style files */
+// Additional global styles for minimal design
+.mat-mdc-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-mdc-raised-button {
+  border-radius: 4px;
+}
+
+// You can add more global styles here to enhance the minimal look

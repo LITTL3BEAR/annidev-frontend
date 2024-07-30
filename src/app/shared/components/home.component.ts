@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
+import { HeaderComponent } from './header.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent],
   template: `
-    <p>
-      home works!
-    </p>
+    <app-header />
+    <p>home works!</p>
   `,
   styles: ``
 })

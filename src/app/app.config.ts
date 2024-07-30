@@ -7,8 +7,10 @@ import { provideEffects } from '@ngrx/effects';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
-// import { reducers, metaReducers } from './store/reducers';
-// import { effects } from './store/effects';
+import { reducers, metaReducers } from './store/reducers';
+import { AuthEffects } from './store/effects/auth.effects';
+
+import { ThemeService } from './core/services/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideHttpClient(withFetch()),
-    // provideStore(reducers, { metaReducers }),
-    // provideEffects(effects)
+    provideStore(reducers, { metaReducers }),
+    provideEffects([AuthEffects]),
+    ThemeService
   ]
 };

@@ -1,17 +1,122 @@
 @use '@angular/material' as mat;
+@use 'sass:map';
 
-$primary-palette: mat.define-palette(mat.$brown-palette);
-$accent-palette: mat.define-palette(mat.$green-palette, A200, A100, A400);
-$warn-palette: mat.define-palette(mat.$red-palette);
+// Define custom palettes
+$minimal-primary: (
+  50: #F2EEEB,
+  100: #BF8F73,
+  200: #8C5946,
+  300: #402B23,
+  400: #A6948D,
+  500: #8C5946,  // Main primary color
+  600: #402B23,
+  700: #402B23,
+  800: #402B23,
+  900: #402B23,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
 
-$theme: mat.define-light-theme((
+$minimal-accent: (
+  50: #F2EEEB,
+  100: #A6948D,
+  200: #BF8F73,
+  300: #8C5946,
+  400: #402B23,
+  500: #BF8F73,  // Main accent color
+  600: #8C5946,
+  700: #402B23,
+  800: #402B23,
+  900: #402B23,
+  A100: #BF8F73,
+  A200: #8C5946,
+  A400: #402B23,
+  A700: #402B23,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
+// Create the palettes
+$minimal-primary-palette: mat.define-palette($minimal-primary, 500);
+$minimal-accent-palette: mat.define-palette($minimal-accent, 500, A100, A400);
+$minimal-warn-palette: mat.define-palette(mat.$red-palette);
+
+// Create the theme object
+$minimal-light-theme: mat.define-light-theme((
  color: (
-   primary: $primary-palette,
-   accent: $accent-palette,
-   warn: $warn-palette,
+   primary: $minimal-primary-palette,
+   accent: $minimal-accent-palette,
+   warn: $minimal-warn-palette,
  ),
- typography: mat.define-typography-config(),
- density: 0,
 ));
 
-@include mat.all-component-themes($theme);
+$minimal-dark-theme: mat.define-dark-theme((
+ color: (
+   primary: $minimal-primary-palette,
+   accent: $minimal-accent-palette,
+   warn: $minimal-warn-palette,
+ ),
+));
+
+// Custom function to create CSS custom properties
+@function create-custom-properties($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: map.get($color-config, 'primary');
+  $accent-palette: map.get($color-config, 'accent');
+  $warn-palette: map.get($color-config, 'warn');
+  $is-dark: map.get($color-config, 'is-dark');
+
+  @return (
+    --primary-color: #{mat.get-color-from-palette($primary-palette, 500)},
+    --accent-color: #{mat.get-color-from-palette($accent-palette, 500)},
+    --warn-color: #{mat.get-color-from-palette($warn-palette, 500)},
+    --background-color: #{if($is-dark, #402B23, #F2EEEB)},
+    --text-color: #{if($is-dark, #F2EEEB, #402B23)},
+    --is-dark-theme: #{$is-dark}
+  );
+}
+
+// Mixin to apply custom properties
+@mixin apply-custom-properties($theme) {
+  $custom-properties: create-custom-properties($theme);
+  @each $name, $value in $custom-properties {
+    #{$name}: #{$value};
+  }
+}
+
+// Mixin for custom styles based on theme
+@mixin custom-styles($theme) {
+  $color-config: mat.get-color-config($theme);
+  $is-dark: map.get($color-config, 'is-dark');
+
+  body {
+    background-color: if($is-dark, #402B23, #F2EEEB);
+    color: if($is-dark, #F2EEEB, #402B23);
+  }
+
+  // Add more custom styles here
+}
