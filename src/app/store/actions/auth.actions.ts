@@ -30,4 +30,8 @@ export const registerFailure = createAction(
   props<{ error: any }>()
 );
 
+export const forgetPassword = createAction('[Auth] Forget Password', props<{ email: string }>());
+export const forgetPasswordSuccess = createAction('[Auth] Forget Password Success', props<{ message: string }>());
+export const forgetPasswordFailure = createAction('[Auth] Forget Password Failure', props<{ error: any }>());
+
 export const logout = createAction('[Auth] Logout');

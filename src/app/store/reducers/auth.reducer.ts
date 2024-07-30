@@ -31,5 +31,8 @@ export const reducer = createReducer(
     loading: false,
     error,
   })),
-  on(AuthActions.logout, () => initialState)
+  on(AuthActions.logout, () => initialState),
+  on(AuthActions.forgetPassword, (state) => ({ ...state, loading: true, error: null, forgetPasswordMessage: null })),
+  on(AuthActions.forgetPasswordSuccess, (state, { message }) => ({ ...state, loading: false, forgetPasswordMessage: message })),
+  on(AuthActions.forgetPasswordFailure, (state, { error }) => ({ ...state, loading: false, error }))
 );
