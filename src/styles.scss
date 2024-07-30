@@ -16,17 +16,19 @@
   @include themes.apply-custom-properties(themes.$minimal-light-theme);
 }
 
-// Dark theme class
-.dark-theme {
-  @include mat.all-component-colors(themes.$minimal-dark-theme);
-  @include themes.custom-styles(themes.$minimal-dark-theme);
-  @include themes.apply-custom-properties(themes.$minimal-dark-theme);
-}
-
 // Global styles
 html, body { height: 100%; }
 body {
   margin: 0;
   font-family: vars.$font-family-base;
   transition: background-color vars.$transition-duration ease, color vars.$transition-duration ease;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+// Dark theme class
+.dark-theme {
+  @include mat.all-component-colors(themes.$minimal-dark-theme);
+  @include themes.custom-styles(themes.$minimal-dark-theme);
+  @include themes.apply-custom-properties(themes.$minimal-dark-theme);
 }

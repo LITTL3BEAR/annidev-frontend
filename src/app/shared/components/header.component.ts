@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Observable } from 'rxjs';
 
 import { ThemeService } from '../../core/services/theme.service';
 
@@ -23,19 +24,21 @@ import { ThemeService } from '../../core/services/theme.service';
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
 
-      button {
-        margin-left: auto; // ดัน button ไปทางขวาสุด
-      }
+    button {
+      margin-left: auto;
     }
   `]
 })
 export class HeaderComponent {
-  isDarkTheme$ = this.themeService.isDarkTheme$();
+  readonly isDarkTheme$: Observable<boolean>;
 
-  constructor(private themeService: ThemeService) { }
+  constructor(private themeService: ThemeService) {
+    this.isDarkTheme$ = this.themeService.isDarkTheme$();
+  }
 
-  toggleTheme() {
+  toggleTheme(): void {
     this.themeService.toggleDarkTheme();
   }
 }
