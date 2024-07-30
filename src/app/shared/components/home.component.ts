@@ -9,7 +9,7 @@ import { HeaderComponent } from './header.component';
     <app-header />
     <p>home works!</p>
   `,
-  styles: ``
+  styles: []
 })
 export class HomeComponent {
 

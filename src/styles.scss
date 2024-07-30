@@ -1,5 +1,9 @@
 @use '@angular/material' as mat;
 @use 'styles/themes' as themes;
+@use 'styles/variables' as vars;
+@use 'styles/mixins' as mix;
+@use 'styles/components' as comp;
+@use 'styles/utilities' as util;
 
 @include mat.core();
 
@@ -12,13 +16,6 @@
   @include themes.apply-custom-properties(themes.$minimal-light-theme);
 }
 
-// Global styles
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-}
-
 // Dark theme class
 .dark-theme {
   @include mat.all-component-colors(themes.$minimal-dark-theme);
@@ -26,42 +23,10 @@ html, body {
   @include themes.apply-custom-properties(themes.$minimal-dark-theme);
 }
 
-// Additional global styles for minimal design
-.mat-mdc-card {
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-}
-
-.mat-mdc-raised-button {
-  border-radius: 4px;
-}
-
-// Custom styles for light and dark themes
+// Global styles
+html, body { height: 100%; }
 body {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  font-family: vars.$font-family-base;
+  transition: background-color vars.$transition-duration ease, color vars.$transition-duration ease;
 }
-
-.light-theme {
-  --primary-bg: #F2EEEB;
-  --secondary-bg: #BF8F73;
-  --text-color: #402B23;
-}
-
-.dark-theme {
-  --primary-bg: #402B23;
-  --secondary-bg: #8C5946;
-  --text-color: #F2EEEB;
-}
-
-// Example usage of custom properties
-.custom-element {
-  background-color: var(--primary-bg);
-  color: var(--text-color);
-}
-
-.accent-element {
-  background-color: var(--secondary-bg);
-  color: var(--text-color);
-}
-
-// You can add more global styles here to enhance the minimal look

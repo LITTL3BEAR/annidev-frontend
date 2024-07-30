@@ -1,0 +1,44 @@
+@use 'variables' as vars;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-styles {
+  width: 100%;
+  max-width: 400px;
+  border-radius: vars.$border-radius;
+  box-shadow: vars.$box-shadow;
+  padding: 24px;
+  background-color: var(--card-background);
+  transition: box-shadow vars.$transition-duration ease;
+
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+@mixin button-styles {
+  padding: 12px;
+  border-radius: 4px;
+  transition: all vars.$transition-duration ease;
+  box-shadow: vars.$box-shadow;
+
+  &:not([disabled]):hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:not([disabled]):active {
+    box-shadow: vars.$box-shadow;
+  }
+
+  &[disabled] {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}

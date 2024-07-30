@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
+@use 'variables' as vars;
 
 // Define custom palettes
 $minimal-primary: (
@@ -121,6 +122,7 @@ $minimal-dark-theme: mat.define-dark-theme((
     --warn-color: #{mat.get-color-from-palette($warn-palette, 500)},
     --background-color: #{if($is-dark, #402B23, #F2EEEB)},
     --text-color: #{if($is-dark, #F2EEEB, #402B23)},
+    --card-background: #{if($is-dark, #5D3E31, #FFFFFF)},
     --is-dark-theme: #{$is-dark}
   );
 }
@@ -143,5 +145,9 @@ $minimal-dark-theme: mat.define-dark-theme((
     color: if($is-dark, #F2EEEB, #402B23);
   }
 
-  // Add more custom styles here
+  .mat-mdc-card {
+    background-color: var(--card-background);
+  }
+
+  // Add more custom styles here as needed
 }

@@ -21,24 +21,26 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   template: `
-    <div class="login-container">
-      <mat-card class="login-card">
+    <div class="vertical-container">
+      <mat-card>
         <mat-card-title>Login</mat-card-title>
         <mat-card-content>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
               <input matInput formControlName="username" required>
+              @if (loginForm.get('username')?.hasError('required')) { <mat-error> Username is required </mat-error> }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Password</mat-label>
               <input matInput type="password" formControlName="password" required>
+              @if (loginForm.get('password')?.hasError('required')) { <mat-error> Password is required </mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="login-button">Login</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
           </form>
-          <div class="login-links">
+          <div class="links">
             <a routerLink="/auth/forgot-password">Forgot Password?</a>
             <a routerLink="/auth/register">Don't have an account? Sign up</a>
           </div>
@@ -46,96 +48,7 @@ import { RouterModule } from '@angular/router';
       </mat-card>
     </div>
   `,
-  styles: [`
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: var(--background-color);
-    }
-    .login-card {
-      width: 100%;
-      max-width: 400px;
-      padding: 24px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      background-color: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      transition: box-shadow 0.3s ease;
-    }
-    .login-card:hover {
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-    mat-card-title {
-      text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 20px;
-      font-size: 24px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-    mat-form-field {
-      margin-bottom: 15px;
-    }
-    .login-button {
-      margin-top: 10px;
-      background-color: var(--primary-color);
-      color: white;
-      padding: 12px;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .login-button:not([disabled]):hover {
-      background-color: var(--primary-color);
-      opacity: 0.9;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-    .login-button:not([disabled]):active {
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .login-button[disabled] {
-      background-color: #cccccc;
-      color: #666666;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-    .login-links {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
-    .login-links a {
-      color: var(--primary-color);
-      text-decoration: none;
-      margin-top: 10px;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    .login-links a::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      bottom: -2px;
-      left: 0;
-      background-color: var(--primary-color);
-      visibility: hidden;
-      transform: scaleX(0);
-      transition: all 0.3s ease;
-    }
-    .login-links a:hover {
-      color: var(--accent-color);
-    }
-    .login-links a:hover::after {
-      visibility: visible;
-      transform: scaleX(1);
-    }
-  `]
+  styles: []
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -149,7 +62,8 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.store.dispatch(login(this.loginForm.value));
+      console.log(this.loginForm.value);
+      // this.store.dispatch(login(this.loginForm.value));
     }
   }
 }
