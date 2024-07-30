@@ -4,10 +4,10 @@
 // Define custom palettes
 $minimal-primary: (
   50: #F2EEEB,
-  100: #BF8F73,
-  200: #8C5946,
-  300: #402B23,
-  400: #A6948D,
+  100: #A6948D,
+  200: #BF8F73,
+  300: #8C5946,
+  400: #402B23,
   500: #8C5946,  // Main primary color
   600: #402B23,
   700: #402B23,
@@ -33,7 +33,7 @@ $minimal-accent: (
   200: #BF8F73,
   300: #8C5946,
   400: #402B23,
-  500: #BF8F73,  // Main accent color
+  500: #A6948D,  // Main accent color
   600: #8C5946,
   700: #402B23,
   800: #402B23,
@@ -48,7 +48,7 @@ $minimal-accent: (
     200: rgba(black, 0.87),
     300: white,
     400: white,
-    500: white,
+    500: rgba(black, 0.87),
     600: white,
     700: white,
     800: white,
@@ -60,10 +60,35 @@ $minimal-accent: (
   )
 );
 
+$minimal-warn: (
+  50: #FDEAE5,
+  100: #F9C6B9,
+  200: #F59F8A,
+  300: #F0775B,
+  400: #ED5937,
+  500: #8C5946,  // Main warn color
+  600: #853C13,
+  700: #7A3310,
+  800: #702B0D,
+  900: #5D1D07,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
 // Create the palettes
 $minimal-primary-palette: mat.define-palette($minimal-primary, 500);
 $minimal-accent-palette: mat.define-palette($minimal-accent, 500, A100, A400);
-$minimal-warn-palette: mat.define-palette(mat.$red-palette);
+$minimal-warn-palette: mat.define-palette($minimal-warn, 500);
 
 // Create the theme object
 $minimal-light-theme: mat.define-light-theme((

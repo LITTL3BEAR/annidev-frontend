@@ -36,4 +36,32 @@ html, body {
   border-radius: 4px;
 }
 
+// Custom styles for light and dark themes
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.light-theme {
+  --primary-bg: #F2EEEB;
+  --secondary-bg: #BF8F73;
+  --text-color: #402B23;
+}
+
+.dark-theme {
+  --primary-bg: #402B23;
+  --secondary-bg: #8C5946;
+  --text-color: #F2EEEB;
+}
+
+// Example usage of custom properties
+.custom-element {
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+}
+
+.accent-element {
+  background-color: var(--secondary-bg);
+  color: var(--text-color);
+}
+
 // You can add more global styles here to enhance the minimal look
