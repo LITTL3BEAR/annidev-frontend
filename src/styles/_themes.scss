@@ -62,22 +62,22 @@ $minimal-accent: (
 );
 
 $minimal-warn: (
-  50: #FDEAE5,
-  100: #F9C6B9,
-  200: #F59F8A,
-  300: #F0775B,
-  400: #ED5937,
-  500: #8C5946,  // Main warn color
-  600: #853C13,
-  700: #7A3310,
-  800: #702B0D,
-  900: #5D1D07,
+  50: #FDF0EC,
+  100: #FADAD0,
+  200: #F6C1B1,
+  300: #F2A892,
+  400: #EF957A,
+  500: #E76F51,  // Main warn color
+  600: #D46348,
+  700: #BC573E,
+  800: #A44B35,
+  900: #8C3F2B,
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
     300: rgba(black, 0.87),
-    400: white,
+    400: rgba(black, 0.87),
     500: white,
     600: white,
     700: white,
