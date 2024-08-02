@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { login } from '../../store/actions/auth.actions';
+import { RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { login, loginSuccess } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -29,13 +28,13 @@ import { RouterModule } from '@angular/router';
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
               <input matInput formControlName="username" required>
-              @if (loginForm.get('username')?.hasError('required')) { <mat-error> Username is required </mat-error> }
+              @if (loginForm.get('username')?.hasError('required')) { <mat-error>Username is required</mat-error> }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Password</mat-label>
               <input matInput type="password" formControlName="password" required>
-              @if (loginForm.get('password')?.hasError('required')) { <mat-error> Password is required </mat-error> }
+              @if (loginForm.get('password')?.hasError('required')) { <mat-error>Password is required</mat-error> }
             </mat-form-field>
 
             <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
@@ -62,8 +61,8 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
-      // this.store.dispatch(login(this.loginForm.value));
+      const { username, password } = this.loginForm.value
+      this.store.dispatch(login({ username, password }));
     }
   }
 }

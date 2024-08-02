@@ -12,7 +12,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.login),
       mergeMap((action) =>
-        this.authService.login(action.email, action.password).pipe(
+        this.authService.login(action.username, action.password).pipe(
           map((response) => AuthActions.loginSuccess({ user: response.user, token: response.token })),
           catchError((error) => of(AuthActions.loginFailure({ error })))
         )
@@ -20,15 +20,25 @@ export class AuthEffects {
     )
   );
 
-  loginSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loginSuccess),
-        tap(({ token }) => {
-          this.authService.setToken(token);
-          this.router.navigate(['/']);
-        })
-      ),
+  loginSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginSuccess),
+      tap(({ token }) => {
+        this.authService.setToken(token);
+        this.router.navigate(['/']);
+      })
+    ),
+    { dispatch: false }
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      tap(() => {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      })
+    ),
     { dispatch: false }
   );
 
@@ -44,37 +54,24 @@ export class AuthEffects {
     )
   );
 
-  registerSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.registerSuccess),
-        tap(({ token }) => {
-          this.authService.setToken(token);
-          this.router.navigate(['/']);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  logout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => {
-          this.authService.logout();
-          this.router.navigate(['/login']);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  forgetPassword$ = createEffect(() =>
+  registerSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.forgetPassword),
+      ofType(AuthActions.registerSuccess),
+      tap(({ token }) => {
+        this.authService.setToken(token);
+        this.router.navigate(['/']);
+      })
+    ),
+    { dispatch: false }
+  );
+
+  forgotPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.forgotPassword),
       switchMap(({ email }) =>
-        this.authService.forgetPassword(email).pipe(
-          map((message) => AuthActions.forgetPasswordSuccess({ message })),
-          catchError((error) => of(AuthActions.forgetPasswordFailure({ error })))
+        this.authService.forgotPassword(email).pipe(
+          map((message) => AuthActions.forgotPasswordSuccess({ message })),
+          catchError((error) => of(AuthActions.forgotPasswordFailure({ error })))
         )
       )
     )

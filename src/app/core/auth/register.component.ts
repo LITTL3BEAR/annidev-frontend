@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { register } from '../../store/actions/auth.actions';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { register } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -94,8 +93,7 @@ export class RegisterComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       const { username, email, password } = this.registerForm.value;
-      console.log({username, email, password});
-      // this.store.dispatch(register({ username, email, password }));
+      this.store.dispatch(register({ username, email, password }));
     }
   }
 }
