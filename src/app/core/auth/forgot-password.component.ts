@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Store } from '@ngrx/store';
-import { forgotPassword } from '../../store/actions/auth.actions';
+import { forgotPassword } from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-forgot-password',
@@ -43,10 +43,13 @@ import { forgotPassword } from '../../store/actions/auth.actions';
   `,
   styles: []
 })
-export class ForgetPasswordComponent {
+export class ForgotPasswordComponent {
+  private fb = inject(FormBuilder);
+  private store = inject(Store);
+
   forgotPasswordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor() {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });

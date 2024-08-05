@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { register } from '../../store/actions/auth.actions';
+import { register } from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -66,9 +66,12 @@ import { register } from '../../store/actions/auth.actions';
   styles: []
 })
 export class RegisterComponent {
+  private fb = inject(FormBuilder);
+  private store = inject(Store);
+
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor() {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],

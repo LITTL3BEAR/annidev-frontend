@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Store } from '@ngrx/store';
-import { login, loginSuccess } from '../../store/actions/auth.actions';
+import { login } from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -50,9 +50,12 @@ import { login, loginSuccess } from '../../store/actions/auth.actions';
   styles: []
 })
 export class LoginComponent {
+  private fb = inject(FormBuilder);
+  private store = inject(Store);
+
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
