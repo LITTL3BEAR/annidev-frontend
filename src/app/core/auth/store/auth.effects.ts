@@ -3,10 +3,10 @@ import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from '../../core/auth/auth.service';
+import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
-import { ErrorHandlingService } from '../../core/services/error-handling.service';
-import { SnackbarService } from '../../core/services/snackbar.service';
+import { ErrorHandlingService } from '../../services/error-handling.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 export class AuthEffects {
   private actions$ = inject(Actions);

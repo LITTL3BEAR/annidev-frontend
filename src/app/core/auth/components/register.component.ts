@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { AuthActions, selectAuthLoading } from '../../store';
+import { AuthActions, selectAuthLoading } from '../store';
 
 @Component({
   selector: 'app-register',
