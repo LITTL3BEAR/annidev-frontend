@@ -6,8 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { register } from '../../store/auth/auth.actions';
+import { AuthActions, selectAuthLoading } from '../../store';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +20,7 @@ import { register } from '../../store/auth/auth.actions';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     RouterModule
   ],
@@ -54,7 +57,10 @@ import { register } from '../../store/auth/auth.actions';
               @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) { <mat-error> Passwords do not match </mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Register</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">
+              @if (loading()) { <mat-spinner diameter="20"></mat-spinner> }
+              @else { Register }
+            </button>
           </form>
           <div class="links">
             <a routerLink="/auth/login">Already have an account? Login</a>
@@ -70,6 +76,7 @@ export class RegisterComponent {
   private store = inject(Store);
 
   registerForm: FormGroup;
+  loading = toSignal(this.store.select(selectAuthLoading));
 
   constructor() {
     this.registerForm = this.fb.group({
@@ -96,7 +103,7 @@ export class RegisterComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       const { username, email, password } = this.registerForm.value;
-      this.store.dispatch(register({ username, email, password }));
+      this.store.dispatch(AuthActions.register({ username, email, password }));
     }
   }
 }

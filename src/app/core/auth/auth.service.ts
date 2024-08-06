@@ -1,38 +1,35 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { ApiService } from '../services/api.service';
+import { } from '../../store/auth/auth.state';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/auth`;
-
-  constructor(private http: HttpClient) {}
+  private apiService = inject(ApiService);
+  private authEndpoint = 'auth';
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { username, password });
+    return this.apiService.post(`${this.authEndpoint}/login`, { username, password })
   }
 
   register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { username, email, password });
+    return this.apiService.post(`${this.authEndpoint}/register`, { username, email, password })
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+    return this.apiService.post(`${this.authEndpoint}/forgot-password`, { email })
   }
 
   logout(): void {
     localStorage.removeItem('token');
   }
 
-  setToken(token: string): void {
-    localStorage.setItem('token', token);
-  }
-
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
   }
 
   isLoggedIn(): boolean {

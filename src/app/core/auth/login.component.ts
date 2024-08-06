@@ -1,21 +1,26 @@
 import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { login } from '../../store/auth/auth.actions';
+import { AuthActions, selectAuthLoading } from '../../store';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
+    AsyncPipe,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     RouterModule
   ],
@@ -37,7 +42,10 @@ import { login } from '../../store/auth/auth.actions';
               @if (loginForm.get('password')?.hasError('required')) { <mat-error>Password is required</mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || loading()">
+              @if (loading()) { <mat-spinner diameter="20"></mat-spinner> }
+              @else { Login }
+            </button>
           </form>
           <div class="links">
             <a routerLink="/auth/forgot-password">Forgot Password?</a>
@@ -54,6 +62,7 @@ export class LoginComponent {
   private store = inject(Store);
 
   loginForm: FormGroup;
+  loading = toSignal(this.store.select(selectAuthLoading));
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -65,7 +74,7 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value
-      this.store.dispatch(login({ username, password }));
+      this.store.dispatch(AuthActions.login({ username, password }));
     }
   }
 }

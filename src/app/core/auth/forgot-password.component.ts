@@ -5,8 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { forgotPassword } from '../../store/auth/auth.actions';
+import { AuthActions, selectAuthLoading } from '../../store';
 
 @Component({
   selector: 'app-forgot-password',
@@ -16,6 +18,7 @@ import { forgotPassword } from '../../store/auth/auth.actions';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     RouterModule
   ],
@@ -32,7 +35,10 @@ import { forgotPassword } from '../../store/auth/auth.actions';
               @if (forgotPasswordForm.get('email')?.hasError('email')) { <mat-error>Please enter a valid email address</mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="forgotPasswordForm.invalid">Reset Password</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="forgotPasswordForm.invalid">
+              @if (loading()) { <mat-spinner diameter="20"></mat-spinner> }
+              @else { Reset Password }
+            </button>
           </form>
           <div class="links">
             <a routerLink="/auth/login">Remember your password? Login</a>
@@ -48,6 +54,7 @@ export class ForgotPasswordComponent {
   private store = inject(Store);
 
   forgotPasswordForm: FormGroup;
+  loading = toSignal(this.store.select(selectAuthLoading));
 
   constructor() {
     this.forgotPasswordForm = this.fb.group({
@@ -58,7 +65,7 @@ export class ForgotPasswordComponent {
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
       const { email } = this.forgotPasswordForm.value
-      this.store.dispatch(forgotPassword({ email }));
+      this.store.dispatch(AuthActions.forgotPassword({ email }));
     }
   }
 }
