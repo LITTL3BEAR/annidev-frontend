@@ -1,15 +1,20 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
 import { ErrorHandlingService } from '../services/error-handling.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const errorHandlingService = inject(ErrorHandlingService);
+  const errorHandler = inject(ErrorHandlingService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      errorHandlingService.handleError(error);
+      if (error.status === 401) {
+        errorHandler.handleAuthError();
+      } else if (!navigator.onLine) {
+        errorHandler.handleNetworkError();
+      } else {
+        return errorHandler.handleError(error);
+      }
       return throwError(() => error);
     })
   );

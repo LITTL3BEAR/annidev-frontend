@@ -1,25 +1,27 @@
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../core/auth/auth.service';
 import { AuthActions } from './auth.actions';
+import { ErrorHandlingService } from '../../core/services/error-handling.service';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 export class AuthEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-  
+  private snackBar = inject(SnackbarService);
+  private errorHandlingService = inject(ErrorHandlingService);
+
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
       switchMap(({ username, password }) =>
         this.authService.login(username, password).pipe(
           map((response) => AuthActions.loginSuccess({ user: response.user, token: response.token })),
-          catchError((error) => of(AuthActions.loginFailure({ error: error.message })))
+          catchError((error) => of(AuthActions.loginFailure({ error })))
         )
       )
     )
@@ -31,7 +33,7 @@ export class AuthEffects {
       tap(({ token }) => {
         this.authService.setToken(token);
         this.router.navigate(['/']);
-        this.snackBar.open('Login successful', 'Close', { duration: 3000 });
+        this.snackBar.success('Login successful');
       })
     ),
     { dispatch: false }
@@ -41,7 +43,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.loginFailure),
       tap(({ error }) => {
-        this.snackBar.open(`Login failed: ${error}`, 'Close', { duration: 5000 });
+        this.errorHandlingService.handleError(error);
       })
     ),
     { dispatch: false }
@@ -53,7 +55,7 @@ export class AuthEffects {
       switchMap(({ username, email, password }) =>
         this.authService.register(username, email, password).pipe(
           map((response) => AuthActions.registerSuccess({ user: response.user, token: response.token })),
-          catchError((error) => of(AuthActions.registerFailure({ error: error.message })))
+          catchError((error) => of(AuthActions.registerFailure({ error })))
         )
       )
     )
@@ -65,7 +67,7 @@ export class AuthEffects {
       tap(({ token }) => {
         this.authService.setToken(token);
         this.router.navigate(['/']);
-        this.snackBar.open('Register successful', 'Close', { duration: 3000 });
+        this.snackBar.success('Register successful');
       })
     ),
     { dispatch: false }
@@ -75,7 +77,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.registerFailure),
       tap(({ error }) => {
-        this.snackBar.open(`Register failed: ${error}`, 'Close', { duration: 5000 });
+        this.errorHandlingService.handleError(error);
       })
     ),
     { dispatch: false }
@@ -87,7 +89,7 @@ export class AuthEffects {
       switchMap(({ email }) =>
         this.authService.forgotPassword(email).pipe(
           map(() => AuthActions.forgotPasswordSuccess()),
-          catchError((error) => of(AuthActions.forgotPasswordFailure({ error: error.message })))
+          catchError((error) => of(AuthActions.forgotPasswordFailure({ error })))
         )
       )
     )
@@ -98,7 +100,7 @@ export class AuthEffects {
       ofType(AuthActions.forgotPasswordSuccess),
       tap(() => {
         this.router.navigate(['/auth']);
-        this.snackBar.open('Register successful', 'Close', { duration: 3000 });
+        this.snackBar.success('Sent email successful');
       })
     ),
     { dispatch: false }
@@ -108,7 +110,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.forgotPasswordFailure),
       tap(({ error }) => {
-        this.snackBar.open(`Register failed: ${error}`, 'Close', { duration: 5000 });
+        this.errorHandlingService.handleError(error);
       })
     ),
     { dispatch: false }
@@ -120,7 +122,7 @@ export class AuthEffects {
       tap(() => {
         this.authService.logout();
         this.router.navigate(['/login']);
-        this.snackBar.open('Logged out successfully', 'Close', { duration: 3000 });
+        this.snackBar.success('Logged out successfully');
       })
     ),
     { dispatch: false }

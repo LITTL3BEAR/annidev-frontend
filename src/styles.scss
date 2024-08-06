@@ -1,15 +1,18 @@
+// src/styles.scss
 @use '@angular/material' as mat;
 @use 'styles/themes' as themes;
 @use 'styles/variables' as vars;
 @use 'styles/mixins' as mix;
 @use 'styles/components' as comp;
 @use 'styles/utilities' as util;
+@use 'styles/snackbar' as snackbar; 
 
 @include mat.core();
 
 // Apply the light theme by default
 @include mat.all-component-themes(themes.$minimal-light-theme);
 @include themes.custom-styles(themes.$minimal-light-theme);
+@include snackbar.custom-snackbar(themes.$minimal-light-theme);
 
 // Apply custom properties
 :root {
@@ -31,4 +34,5 @@ body {
   @include mat.all-component-colors(themes.$minimal-dark-theme);
   @include themes.custom-styles(themes.$minimal-dark-theme);
   @include themes.apply-custom-properties(themes.$minimal-dark-theme);
+  @include snackbar.custom-snackbar(themes.$minimal-dark-theme);
 }

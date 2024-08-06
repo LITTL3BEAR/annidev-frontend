@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 import { HomeComponent } from './shared/components/home.component';
 import { NotFoundComponent } from './shared/components/not-found.component';
 
@@ -12,7 +12,7 @@ export const routes: Routes = [
   {
     path: 'manga',
     loadChildren: () => import('./features/manga/manga.routes').then(m => m.MANGA_ROUTES),
-    canActivate: [AuthGuard]
+    canActivate: [authGuard]
   },
   { path: '**', component: NotFoundComponent }
 ];

@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../services/api.service';
-import { } from '../../store/auth/auth.state';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

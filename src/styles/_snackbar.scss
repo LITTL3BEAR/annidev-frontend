@@ -1,0 +1,33 @@
+@use '@angular/material' as mat;
+
+@mixin custom-snackbar($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .mat-mdc-snack-bar-container {
+    &.snackbar-success {
+      --mdc-snackbar-container-color: #{mat.get-color-from-palette($primary, 600)};
+      --mat-mdc-snack-bar-button-color: #{mat.get-color-from-palette($primary, '600-contrast')};
+      --mdc-snackbar-supporting-text-color: #{mat.get-color-from-palette($primary, '600-contrast')};
+    }
+
+    &.snackbar-error {
+      --mdc-snackbar-container-color: #{mat.get-color-from-palette($warn, 600)};
+      --mat-mdc-snack-bar-button-color: #{mat.get-color-from-palette($warn, '600-contrast')};
+      --mdc-snackbar-supporting-text-color: #{mat.get-color-from-palette($warn, '600-contrast')};
+    }
+
+    &.snackbar-info {
+      --mdc-snackbar-container-color: #{mat.get-color-from-palette($accent, 600)};
+      --mat-mdc-snack-bar-button-color: #{mat.get-color-from-palette($accent, '600-contrast')};
+      --mdc-snackbar-supporting-text-color: #{mat.get-color-from-palette($accent, '600-contrast')};
+    }
+
+    &.snackbar-warning {
+      --mdc-snackbar-container-color: #{mat.get-color-from-palette($warn, 400)};
+      --mat-mdc-snack-bar-button-color: #{mat.get-color-from-palette($warn, '400-contrast')};
+      --mdc-snackbar-supporting-text-color: #{mat.get-color-from-palette($warn, '400-contrast')};
+    }
+  }
+}
