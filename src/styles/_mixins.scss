@@ -1,4 +1,4 @@
-@use 'variables' as vars;
+@use 'variables' as v;
 
 @mixin flex-center {
   display: flex;
@@ -6,38 +6,38 @@
   align-items: center;
 }
 
-@mixin card-styles {
+@mixin card {
   width: 100%;
   max-width: 400px;
-  border-radius: vars.$border-radius;
-  box-shadow: vars.$box-shadow;
+  border-radius: v.$border-radius;
+  box-shadow: v.$box-shadow;
   padding: 24px;
-  background-color: var(--card-background);
-  transition: box-shadow vars.$transition-duration ease;
+  background-color: var(--card);
+  transition: box-shadow v.$transition-duration ease;
 
   &:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
-@mixin button-styles {
+@mixin button {
   padding: 12px;
   border-radius: 4px;
-  transition: all vars.$transition-duration ease;
-  box-shadow: vars.$box-shadow;
+  transition: all v.$transition-duration ease;
+  box-shadow: v.$box-shadow;
 
-  &:not([disabled]):hover {
-    opacity: 0.9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  &:not(:disabled) {
+    &:hover {
+      opacity: 0.9;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    &:active {
+      box-shadow: v.$box-shadow;
+    }
   }
 
-  &:not([disabled]):active {
-    box-shadow: vars.$box-shadow;
-  }
-
-  &[disabled] {
-    background-color: #cccccc;
-    color: #666666;
+  &:disabled {
+    opacity: 0.6;
     cursor: not-allowed;
     box-shadow: none;
   }

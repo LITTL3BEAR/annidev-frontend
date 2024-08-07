@@ -1,4 +1,10 @@
-$font-family-base: 'Roboto', sans-serif;
+$font-family: 'Roboto', sans-serif;
 $border-radius: 8px;
 $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 $transition-duration: 0.3s;
+
+$snackbar-success: #5D8B5F;
+$snackbar-error: #A94442;
+$snackbar-info: #607D8B;
+$snackbar-warning: #D4A76A;
+$snackbar-opacity: 0.95;

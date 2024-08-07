@@ -1,38 +1,31 @@
-// src/styles.scss
 @use '@angular/material' as mat;
-@use 'styles/themes' as themes;
-@use 'styles/variables' as vars;
-@use 'styles/mixins' as mix;
-@use 'styles/components' as comp;
-@use 'styles/utilities' as util;
-@use 'styles/snackbar' as snackbar; 
+@use './styles/components';
+@use './styles/mixins';
+@use './styles/snackbar';
+@use './styles/themes';
+@use './styles/utilities';
+@use './styles/variables' as v;
 
 @include mat.core();
 
-// Apply the light theme by default
 @include mat.all-component-themes(themes.$minimal-light-theme);
-@include themes.custom-styles(themes.$minimal-light-theme);
+@include themes.theme-styles(themes.$minimal-light-theme);
 @include snackbar.custom-snackbar(themes.$minimal-light-theme);
 
-// Apply custom properties
 :root {
-  @include themes.apply-custom-properties(themes.$minimal-light-theme);
+  @include themes.apply-theme-vars(themes.$minimal-light-theme);
 }
 
-// Global styles
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: vars.$font-family-base;
-  transition: background-color vars.$transition-duration ease, color vars.$transition-duration ease;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  font-family: v.$font-family;
+  transition: background-color v.$transition-duration ease, color v.$transition-duration ease;
 }
 
-// Dark theme class
 .dark-theme {
   @include mat.all-component-colors(themes.$minimal-dark-theme);
-  @include themes.custom-styles(themes.$minimal-dark-theme);
-  @include themes.apply-custom-properties(themes.$minimal-dark-theme);
+  @include themes.theme-styles(themes.$minimal-dark-theme);
+  @include themes.apply-theme-vars(themes.$minimal-dark-theme);
   @include snackbar.custom-snackbar(themes.$minimal-dark-theme);
 }

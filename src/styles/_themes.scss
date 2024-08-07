@@ -1,24 +1,22 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
-@use 'variables' as vars;
 
-// Define custom palettes
 $minimal-primary: (
-  50: #F2EEEB,
-  100: #A6948D,
-  200: #BF8F73,
-  300: #8C5946,
-  400: #402B23,
-  500: #8C5946,  // Main primary color
-  600: #402B23,
-  700: #402B23,
+  50: #F5F0EB,
+  100: #E0D0C5,
+  200: #CCAF9B,
+  300: #B78E71,
+  400: #A26D47,
+  500: #8C5946,
+  600: #734837,
+  700: #5A3728,
   800: #402B23,
-  900: #402B23,
+  900: #2B1D17,
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
-    300: white,
+    300: rgba(black, 0.87),
     400: white,
     500: white,
     600: white,
@@ -29,35 +27,27 @@ $minimal-primary: (
 );
 
 $minimal-accent: (
-  50: #F2EEEB,
-  100: #A6948D,
-  200: #BF8F73,
-  300: #8C5946,
-  400: #402B23,
-  500: #A6948D,  // Main accent color
-  600: #8C5946,
-  700: #402B23,
-  800: #402B23,
-  900: #402B23,
-  A100: #BF8F73,
-  A200: #8C5946,
-  A400: #402B23,
-  A700: #402B23,
+  50: #F7F3F0,
+  100: #E5DBD3,
+  200: #D3C3B6,
+  300: #C1AB99,
+  400: #AF937C,
+  500: #9D7B5F,
+  600: #8B6346,
+  700: #704F38,
+  800: #553B2A,
+  900: #3A271C,
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
-    300: white,
-    400: white,
-    500: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
     600: white,
     700: white,
     800: white,
     900: white,
-    A100: rgba(black, 0.87),
-    A200: white,
-    A400: white,
-    A700: white,
   )
 );
 
@@ -67,7 +57,7 @@ $minimal-warn: (
   200: #F6C1B1,
   300: #F2A892,
   400: #EF957A,
-  500: #E76F51,  // Main warn color
+  500: #E76F51,
   600: #D46348,
   700: #BC573E,
   800: #A44B35,
@@ -86,30 +76,27 @@ $minimal-warn: (
   )
 );
 
-// Create the palettes
-$minimal-primary-palette: mat.define-palette($minimal-primary, 500);
-$minimal-accent-palette: mat.define-palette($minimal-accent, 500, A100, A400);
-$minimal-warn-palette: mat.define-palette($minimal-warn, 500);
+$minimal-primary: mat.define-palette($minimal-primary, 500, 100, 900);
+$minimal-accent: mat.define-palette($minimal-accent, 500, 100, 900);
+$minimal-warn: mat.define-palette($minimal-warn, 500, 100, 900);
 
-// Create the theme object
 $minimal-light-theme: mat.define-light-theme((
- color: (
-   primary: $minimal-primary-palette,
-   accent: $minimal-accent-palette,
-   warn: $minimal-warn-palette,
- ),
+  color: (
+    primary: $minimal-primary,
+    accent: $minimal-accent,
+    warn: $minimal-warn,
+  )
 ));
 
 $minimal-dark-theme: mat.define-dark-theme((
- color: (
-   primary: $minimal-primary-palette,
-   accent: $minimal-accent-palette,
-   warn: $minimal-warn-palette,
- ),
+  color: (
+    primary: $minimal-primary,
+    accent: $minimal-accent,
+    warn: $minimal-warn,
+  )
 ));
 
-// Custom function to create CSS custom properties
-@function create-custom-properties($theme) {
+@function create-theme-vars($theme) {
   $color-config: mat.get-color-config($theme);
   $primary-palette: map.get($color-config, 'primary');
   $accent-palette: map.get($color-config, 'accent');
@@ -117,35 +104,33 @@ $minimal-dark-theme: mat.define-dark-theme((
   $is-dark: map.get($color-config, 'is-dark');
 
   @return (
-    --primary-color: #{mat.get-color-from-palette($primary-palette, 500)},
-    --accent-color: #{mat.get-color-from-palette($accent-palette, 500)},
-    --warn-color: #{mat.get-color-from-palette($warn-palette, 500)},
-    --background-color: #{if($is-dark, #402B23, #F2EEEB)},
-    --text-color: #{if($is-dark, #F2EEEB, #402B23)},
-    --card-background: #{if($is-dark, #5D3E31, #FFFFFF)},
-    --is-dark-theme: #{$is-dark}
+    --primary: #{mat.get-color-from-palette($primary-palette, 500)},
+    --accent: #{mat.get-color-from-palette($accent-palette, 500)},
+    --warn: #{mat.get-color-from-palette($warn-palette, 500)},
+    --background: #{if($is-dark, #402B23, #F2EEEB)},
+    --text: #{if($is-dark, #F2EEEB, #402B23)},
+    --card: #{if($is-dark, #5D3E31, #FFFFFF)},
+    --is-dark: #{$is-dark}
   );
 }
 
-// Mixin to apply custom properties
-@mixin apply-custom-properties($theme) {
-  $custom-properties: create-custom-properties($theme);
-  @each $name, $value in $custom-properties {
+@mixin apply-theme-vars($theme) {
+  $vars: create-theme-vars($theme);
+  @each $name, $value in $vars {
     #{$name}: #{$value};
   }
 }
 
-// Mixin for custom styles based on theme
-@mixin custom-styles($theme) {
+@mixin theme-styles($theme) {
   $color-config: mat.get-color-config($theme);
   $is-dark: map.get($color-config, 'is-dark');
 
   body {
-    background-color: if($is-dark, #402B23, #F2EEEB);
-    color: if($is-dark, #F2EEEB, #402B23);
+    background-color: var(--background);
+    color: var(--text);
   }
 
   .mat-mdc-card {
-    background-color: var(--card-background);
+    background-color: var(--card);
   }
 }
