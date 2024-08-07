@@ -1,25 +1,25 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../services/api.service';
+import { StorageService } from '../services/storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiService = inject(ApiService);
-  private platformId = inject(PLATFORM_ID);
-  private authEndpoint = 'auth';
+  private storageService = inject(StorageService);
+  private readonly AUTH_ENDPOINT = 'auth';
   private readonly TOKEN_KEY = 'token';
 
   login(username: string, password: string): Observable<any> {
-    return this.apiService.post(`${this.authEndpoint}/login`, { username, password })
+    return this.apiService.post(`${this.AUTH_ENDPOINT}/login`, { username, password })
   }
 
   register(username: string, email: string, password: string): Observable<any> {
-    return this.apiService.post(`${this.authEndpoint}/register`, { username, email, password })
+    return this.apiService.post(`${this.AUTH_ENDPOINT}/register`, { username, email, password })
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.apiService.post(`${this.authEndpoint}/forgot-password`, { email })
+    return this.apiService.post(`${this.AUTH_ENDPOINT}/forgot-password`, { email })
   }
 
   logout(): void {
@@ -27,22 +27,15 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(this.TOKEN_KEY);
-    }
-    return null;
+    return this.storageService.getItem(this.TOKEN_KEY);
   }
 
   setToken(token: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(this.TOKEN_KEY, token);
-    }
+    this.storageService.setItem(this.TOKEN_KEY, token);
   }
 
   removeToken(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(this.TOKEN_KEY);
-    }
+    this.storageService.removeItem(this.TOKEN_KEY);
   }
 
   isLoggedIn(): boolean {
