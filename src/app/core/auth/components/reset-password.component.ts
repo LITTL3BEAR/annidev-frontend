@@ -31,14 +31,14 @@ import { SnackbarService } from '../../services/snackbar.service';
           <form [formGroup]="resetPasswordForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="outline">
               <mat-label>New Password</mat-label>
-              <input matInput type="newPassword" formControlName="newPassword" required>
+              <input matInput type="password" formControlName="newPassword" required>
               @if (resetPasswordForm.get('newPassword')?.hasError('required')) { <mat-error>Password is required</mat-error> }
               @if (resetPasswordForm.get('newPassword')?.hasError('minlength')) { <mat-error>Password must be at least 6 characters long</mat-error> }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Confirm Password</mat-label>
-              <input matInput type="newPassword" formControlName="confirmPassword" required>
+              <input matInput type="password" formControlName="confirmPassword" required>
               @if (resetPasswordForm.get('confirmPassword')?.hasError('required')) { <mat-error>Confirm Password is required</mat-error> }
               @if (resetPasswordForm.get('confirmPassword')?.hasError('passwordMismatch')) { <mat-error>Passwords do not match</mat-error> }
             </mat-form-field>
