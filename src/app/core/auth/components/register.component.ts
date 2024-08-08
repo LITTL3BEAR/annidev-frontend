@@ -33,28 +33,28 @@ import { AuthActions, selectAuthLoading } from '../store';
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
               <input matInput formControlName="username" required>
-              @if (registerForm.get('username')?.hasError('required')) { <mat-error> Username is required </mat-error> }
+              @if (registerForm.get('username')?.hasError('required')) { <mat-error>Username is required</mat-error> }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
               <input matInput type="email" formControlName="email" required>
-              @if (registerForm.get('email')?.hasError('required')) { <mat-error> Email is required </mat-error> }
-              @if (registerForm.get('email')?.hasError('email')) { <mat-error> Please enter a valid email address </mat-error> }
+              @if (registerForm.get('email')?.hasError('required')) { <mat-error>Email is required</mat-error> }
+              @if (registerForm.get('email')?.hasError('email')) { <mat-error>Please enter a valid email address</mat-error> }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Password</mat-label>
               <input matInput type="password" formControlName="password" required>
-              @if (registerForm.get('password')?.hasError('required')) { <mat-error> Password is required </mat-error> }
-              @if (registerForm.get('password')?.hasError('minlength')) { <mat-error> Password must be at least 6 characters long </mat-error> }
+              @if (registerForm.get('password')?.hasError('required')) { <mat-error>Password is required</mat-error> }
+              @if (registerForm.get('password')?.hasError('minlength')) { <mat-error>Password must be at least 6 characters long</mat-error> }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Confirm Password</mat-label>
               <input matInput type="password" formControlName="confirmPassword" required>
-              @if (registerForm.get('confirmPassword')?.hasError('required')) { <mat-error> Confirm Password is required </mat-error> }
-              @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) { <mat-error> Passwords do not match </mat-error> }
+              @if (registerForm.get('confirmPassword')?.hasError('required')) { <mat-error>Confirm Password is required</mat-error> }
+              @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) { <mat-error>Passwords do not match</mat-error> }
             </mat-form-field>
 
             <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">

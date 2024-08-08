@@ -15,6 +15,7 @@ export class AuthEffects {
   private snackBar = inject(SnackbarService);
   private errorHandlingService = inject(ErrorHandlingService);
 
+  // Login Effects
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
@@ -33,7 +34,7 @@ export class AuthEffects {
       tap(({ token }) => {
         this.authService.setToken(token);
         this.router.navigate(['/']);
-        this.snackBar.success('Login successful');
+        this.snackBar.success('Login successful.');
       })
     ),
     { dispatch: false }
@@ -49,6 +50,7 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  // Register Effects
   register$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.register),
@@ -67,7 +69,7 @@ export class AuthEffects {
       tap(({ token }) => {
         this.authService.setToken(token);
         this.router.navigate(['/']);
-        this.snackBar.success('Register successful');
+        this.snackBar.success('Register successful.');
       })
     ),
     { dispatch: false }
@@ -83,6 +85,7 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  // Forgot Password Effects
   forgotPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.forgotPassword),
@@ -99,8 +102,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.forgotPasswordSuccess),
       tap(() => {
-        this.router.navigate(['/auth']);
-        this.snackBar.success('Sent email successful');
+        this.snackBar.success('Sent email successful.');
       })
     ),
     { dispatch: false }
@@ -116,13 +118,48 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  // Reset Password Effects
+  resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.resetPassword),
+      switchMap(({ newPassword, token }) =>
+        this.authService.resetPassword(newPassword, token).pipe(
+          map(() => AuthActions.resetPasswordSuccess()),
+          catchError((error) => of(AuthActions.resetPasswordFailure({ error })))
+        )
+      )
+    )
+  );
+
+  resetPasswordSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.resetPasswordSuccess),
+      tap(() => {
+        this.router.navigate(['/auth/login']);
+        this.snackBar.success('Password reset successful. Please login with your new password.');
+      })
+    ),
+    { dispatch: false }
+  );
+
+  resetPasswordFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.resetPasswordFailure),
+      tap(({ error }) => {
+        this.errorHandlingService.handleError(error);
+      })
+    ),
+    { dispatch: false }
+  );
+
+  // Logout Effect
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
       tap(() => {
         this.authService.logout();
-        this.router.navigate(['/login']);
-        this.snackBar.success('Logged out successfully');
+        this.router.navigate(['/auth/login']);
+        this.snackBar.success('Logged out successfully.');
       })
     ),
     { dispatch: false }

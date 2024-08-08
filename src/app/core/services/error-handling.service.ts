@@ -15,7 +15,7 @@ export class ErrorHandlingService {
     } else if (error instanceof ErrorEvent) {
       errorMessage = `Client Error: ${error.message}`;
     } else {
-      errorMessage = error.message || 'Unexpected error occurred';
+      errorMessage = error.message || 'Unexpected error occurred.';
     }
 
     this.snackBar.error(errorMessage);

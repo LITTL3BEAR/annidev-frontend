@@ -22,6 +22,10 @@ export class AuthService {
     return this.apiService.post(`${this.AUTH_ENDPOINT}/forgot-password`, { email })
   }
 
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.apiService.post(`${this.AUTH_ENDPOINT}/reset-password`, { token, newPassword });
+  }
+
   logout(): void {
     this.removeToken();
   }
