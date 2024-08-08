@@ -57,7 +57,7 @@ import { AuthActions, selectAuthLoading } from '../store';
               @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) { <mat-error>Passwords do not match</mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || loading()">
               @if (loading()) { <mat-spinner diameter="20"></mat-spinner> }
               @else { Register }
             </button>

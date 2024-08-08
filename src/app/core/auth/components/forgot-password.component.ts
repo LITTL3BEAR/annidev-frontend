@@ -35,7 +35,7 @@ import { AuthActions, selectAuthLoading } from '../store';
               @if (forgotPasswordForm.get('email')?.hasError('email')) { <mat-error>Please enter a valid email address</mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="forgotPasswordForm.invalid">
+            <button mat-raised-button color="primary" type="submit" [disabled]="forgotPasswordForm.invalid || loading()">
               @if (loading()) { <mat-spinner diameter="20"></mat-spinner> }
               @else { Reset Password }
             </button>

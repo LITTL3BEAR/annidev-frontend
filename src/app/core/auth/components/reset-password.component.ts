@@ -43,7 +43,7 @@ import { SnackbarService } from '../../services/snackbar.service';
               @if (resetPasswordForm.get('confirmPassword')?.hasError('passwordMismatch')) { <mat-error>Passwords do not match</mat-error> }
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="resetPasswordForm.invalid">
+            <button mat-raised-button color="primary" type="submit" [disabled]="resetPasswordForm.invalid || loading()">
               @if (loading()) { <mat-spinner diameter="20"></mat-spinner> }
               @else { Set New Password }
             </button>

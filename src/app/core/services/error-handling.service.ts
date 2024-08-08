@@ -3,6 +3,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 import { SnackbarService } from './snackbar.service';
 
+interface BackendError {
+  status: string;
+  message: string;
+  errors?: { [key: string]: string };
+}
+
 @Injectable({ providedIn: 'root' })
 export class ErrorHandlingService {
   private snackBar = inject(SnackbarService);
@@ -20,18 +26,30 @@ export class ErrorHandlingService {
 
     this.snackBar.error(errorMessage);
     console.error('Error occurred:', error);
-
     return throwError(() => new Error(errorMessage));
   }
 
   private handleHttpError(error: HttpErrorResponse): string {
+    const backendError = error.error as BackendError;
+
+    if (backendError && backendError.message) {
+      if (backendError.errors) {
+        // If there are validation errors, concatenate them
+        const validationErrors = Object.values(backendError.errors).join(', ');
+        return `${backendError.message}: ${validationErrors}`;
+      }
+      return backendError.message;
+    }
+
+    // Fallback to status-based messages if no specific message is provided
     switch (error.status) {
       case 400: return 'Bad request. Please check your input.';
       case 401: return 'Unauthorized. Please log in again.';
       case 403: return 'Forbidden. You don\'t have permission to access this resource.';
       case 404: return 'Resource not found.';
+      case 409: return 'Conflict. The request could not be completed due to a conflict.';
       case 500: return 'Internal server error. Please try again later.';
-      default: return `Server Error: ${error.message}`;
+      default: return `Server Error: ${error.statusText || 'Unknown'}`;
     }
   }
 
