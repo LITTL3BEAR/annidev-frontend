@@ -122,8 +122,8 @@ export class AuthEffects {
   resetPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.resetPassword),
-      switchMap(({ newPassword, token }) =>
-        this.authService.resetPassword(newPassword, token).pipe(
+      switchMap(({ token, newPassword }) =>
+        this.authService.resetPassword(token, newPassword).pipe(
           map(() => AuthActions.resetPasswordSuccess()),
           catchError((error) => of(AuthActions.resetPasswordFailure({ error })))
         )

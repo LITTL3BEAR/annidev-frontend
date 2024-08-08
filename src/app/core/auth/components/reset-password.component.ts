@@ -101,7 +101,7 @@ export class ResetPasswordComponent implements OnInit {
   onSubmit() {
     if (this.resetPasswordForm.valid && this.token) {
       const { newPassword } = this.resetPasswordForm.value;
-      this.store.dispatch(AuthActions.resetPassword({ newPassword, token: this.token }));
+      this.store.dispatch(AuthActions.resetPassword({ token: this.token, newPassword }));
     }
   }
 }
