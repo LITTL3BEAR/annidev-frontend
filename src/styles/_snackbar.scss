@@ -3,22 +3,30 @@
 
 @mixin custom-snackbar($theme) {
   $color-config: map.get($theme, color);
-  $background: map.get($color-config, background);
-  $foreground: map.get($color-config, foreground);
+  $is-dark-theme: map.get($color-config, 'is-dark');
+
+  $snackbar-background-color: if($is-dark-theme, v.$neutral-800, v.$neutral-100);
+  $snackbar-text-color: if($is-dark-theme, v.$neutral-50, v.$text-primary);
 
   $snackbar-types: (
-    success: v.$snackbar-success,
-    error: v.$snackbar-error,
-    info: v.$snackbar-info,
-    warning: v.$snackbar-warning
+    success: v.$success,
+    error: v.$error,
+    info: v.$info,
+    warning: v.$warning
   );
 
   .mat-mdc-snack-bar-container {
+    &.snackbar-default {
+      --mdc-snackbar-container-color: #{rgba($snackbar-background-color, 0.95)};
+      --mat-mdc-snack-bar-button-color: #{$snackbar-text-color};
+      --mdc-snackbar-supporting-text-color: #{$snackbar-text-color};
+    }
+
     @each $type, $color in $snackbar-types {
       &.snackbar-#{$type} {
-        --mdc-snackbar-container-color: #{rgba($color, v.$snackbar-opacity)};
-        --mat-mdc-snack-bar-button-color: #{map.get($foreground, text)};
-        --mdc-snackbar-supporting-text-color: #{map.get($foreground, text)};
+        --mdc-snackbar-container-color: #{rgba($color, 0.95)};
+        --mat-mdc-snack-bar-button-color: #{$snackbar-text-color};
+        --mdc-snackbar-supporting-text-color: #{$snackbar-text-color};
       }
     }
 
@@ -32,18 +40,6 @@
 
     .mat-mdc-snack-bar-actions {
       padding-inline-start: 8px;
-    }
-  }
-
-  @each $type, $color in $snackbar-types {
-    .snackbar-#{$type} {
-      @if (lightness($color) > 50) {
-        --mat-mdc-snack-bar-button-color: #{map.get($foreground, dark-text)};
-        --mdc-snackbar-supporting-text-color: #{map.get($foreground, dark-text)};
-      } @else {
-        --mat-mdc-snack-bar-button-color: #{map.get($foreground, light-text)};
-        --mdc-snackbar-supporting-text-color: #{map.get($foreground, light-text)};
-      }
     }
   }
 }
