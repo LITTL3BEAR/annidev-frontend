@@ -14,5 +14,10 @@ export const routes: Routes = [
     loadChildren: () => import('./features/manga/manga.routes').then(m => m.MANGA_ROUTES),
     canActivate: [authGuard]
   },
+  {
+    path: 'minimood',
+    loadChildren: () => import('./features/minimood/minimood.routes').then(m => m.MINIMOOD_ROUTES),
+    canActivate: [authGuard]
+  },
   { path: '**', component: NotFoundComponent }
 ];
